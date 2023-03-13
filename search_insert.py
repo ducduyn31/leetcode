@@ -14,12 +14,13 @@ def searchInsert(nums: List[int], target: int) -> int:
             high = mid - 1
         else:
             return mid
+
     return mid + 1 if nums[mid] < target else mid
 
 
 if __name__ == '__main__':
-    print(searchInsert([1, 3, 5, 6], 5))
-    print(searchInsert([1, 3, 5, 6], 2))
-    print(searchInsert([1, 3, 5, 6], 7))
-    print(searchInsert([1, 3, 5, 6], 0))
-    print(searchInsert([1], 0))
+    assert searchInsert([1, 3, 5, 6], 5) == 2
+    assert searchInsert([1, 3, 5, 6], 2) == 1
+    assert searchInsert([1, 3, 5, 6], 7) == 4
+    assert searchInsert([1, 3, 5, 6], 0) == 0
+    assert searchInsert([1], 0) == 0
