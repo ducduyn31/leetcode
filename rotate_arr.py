@@ -18,13 +18,12 @@ def rotate(nums: List[int], k: int) -> None:
         j += 1
 
 
+def assert_rotate(nums: List[int], k: int, result: List[int]):
+    rotate(nums, k)
+    assert nums == result
+
+
 if __name__ == '__main__':
-    nums = [1, 2, 3, 4, 5, 6, 7]
-    rotate(nums, 3)
-    print(nums)
-    nums = [-1, -100, 3, 99]
-    rotate(nums, 2)
-    print(nums)
-    nums = [-1, -100, 3, 99]
-    rotate(nums, 0)
-    print(nums)
+    assert_rotate([1, 2, 3, 4, 5, 6, 7], 3, [5, 6, 7, 1, 2, 3, 4])
+    assert_rotate([-1, -100, 3, 99], 2, [3, 99, -1, -100])
+    assert_rotate([-1, -100, 3, 99], 0, [-1, -100, 3, 99])

@@ -1,5 +1,5 @@
 # Definition for singly-linked list.
-from typing import List
+from typing import List, Union, Any, Optional
 
 
 class ListNode:
@@ -9,6 +9,9 @@ class ListNode:
 
     def __str__(self):
         return str(self.val)
+
+    def __eq__(self, other):
+        return self.val == other
 
 
 class LinkedList:
@@ -40,21 +43,24 @@ class LinkedList:
 
 
 def middleNode(head: ListNode) -> ListNode:
-    count = 0
+    slow = fast = head
 
-    current = head
-    index = {}
+    def move(point: ListNode, step: int):
+        result = point
+        for _ in range(step):
+            if result.next:
+                result = result.next
+            else:
+                return None
+        return result
 
-    while current:
-        index[count] = current
-        count += 1
-        current = current.next
+    while fast and fast.next:
+        fast = move(fast, 2)
+        slow = move(slow, 1)
 
-    return index[count // 2]
+    return slow
 
 
 if __name__ == '__main__':
-    input = [1, 2, 3, 4, 5]
-    print(middleNode(LinkedList(input).first))
-    input = [1, 2, 3, 4, 5, 6]
-    print(middleNode(LinkedList(input).first))
+    assert middleNode(LinkedList([1, 2, 3, 4, 5]).first) == 3
+    assert middleNode(LinkedList([1, 2, 3, 4, 5, 6]).first) == 4

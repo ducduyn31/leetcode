@@ -35,6 +35,13 @@ class ListNode:
     def __repr__(self):
         return str(self.val)
 
+    def __eq__(self, other):
+        if not isinstance(other, ListNode) and other is not None:
+            return False
+        if self.val is None and other is None:
+            return True
+        return self.get_chain_val() == other.get_chain_val()
+
 
 def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
     dummy = ListNode(0)
@@ -55,6 +62,10 @@ def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
     return dummy.next
 
 
+def assert_removal(head: ListNode, n: int, result):
+    assert removeNthFromEnd(head, n) == result
+
+
 if __name__ == '__main__':
-    print(removeNthFromEnd(ListNode.from_list([1, 2, 3, 4, 5]), 2))
-    print(removeNthFromEnd(ListNode.from_list([1]), 1))
+    assert_removal(ListNode.from_list([1, 2, 3, 4, 5]), 2, ListNode.from_list([1, 2, 3, 5]))
+    assert_removal(ListNode.from_list([1]), 1, None)
