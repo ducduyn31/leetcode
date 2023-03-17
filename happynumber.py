@@ -6,25 +6,28 @@ def hasSquareRoot(n: int) -> bool:
 
 
 def isHappy(n: int) -> bool:
-    map = set()
+    prev = set()
 
-    current = n
-
-    while current not in map and current > 1:
-        map.add(current)
-        sum = 0
-        while current != 0:
-            sum += (current % 10) ** 2
-            current = current // 10
-
-        if sum == 1:
+    def is_happy_recur(i: int) -> bool:
+        if i == 1:
             return True
+        elif i in prev:
+            return False
+        else:
+            prev.add(i)
 
-        current = sum
+        new_numer = 0
+        while i > 0:
+            new_numer += (i % 10) ** 2
+            i = i // 10
 
-    return False
+        return is_happy_recur(new_numer)
+
+    return is_happy_recur(n)
 
 
 if __name__ == '__main__':
-    print(isHappy(18))
+    assert isHappy(19) is True
+    assert isHappy(2) is False
+    assert isHappy(7) is True
     # isHappy()
