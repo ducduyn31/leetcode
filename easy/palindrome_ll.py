@@ -34,7 +34,7 @@ class ListNode:
 
 
 def isPalindrome(head: ListNode) -> bool:
-    if not head or not head.next:
+    if not head.next:
         return True
     slow, fast = head, head
     reverse = None
@@ -54,7 +54,7 @@ def isPalindrome(head: ListNode) -> bool:
 
 
 if __name__ == '__main__':
-    print(isPalindrome(ListNode.from_list([1])))
-    print(isPalindrome(ListNode.from_list([1, 2])))
-    print(isPalindrome(ListNode.from_list([1, 2, 1])))
-    print(isPalindrome(ListNode.from_list([1, 2, 2, 1])))
+    assert isPalindrome(ListNode.from_list([1])) is True
+    assert isPalindrome(ListNode.from_list([1, 2])) is False
+    assert isPalindrome(ListNode.from_list([1, 2, 1])) is True
+    assert isPalindrome(ListNode.from_list([1, 2, 2, 1])) is True
