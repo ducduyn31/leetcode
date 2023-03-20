@@ -47,8 +47,7 @@ def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
     dummy = ListNode(0)
     dummy.next = head
 
-    nth_node = dummy
-    curr_node = dummy
+    nth_node = curr_node = head
 
     for i in range(n):
         curr_node = curr_node.next
