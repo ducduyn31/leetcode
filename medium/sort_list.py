@@ -60,43 +60,38 @@ def sortList(head: Optional[ListNode]) -> Optional[ListNode]:
     if not head or not head.next:
         return head
 
-    def append_node(current_node: ListNode, next_node: Optional[ListNode]):
-        if not current_node:
-            return next_node
-        current_node.next = next_node
-        return next_node
+    def mid_node():
+        fast = head
+        mid_prev = None
+        while fast and fast.next:
+            fast = fast.next.next
+            mid_prev = mid_prev.next if mid_prev else head
 
-    def concat_sorted_list(left: Optional[ListNode], right: Optional[ListNode]):
-        if not left:
-            return right
-        if not right:
-            return left
-        mid = left
-        while mid.next:
-            mid = mid.next
-        mid.next = right
-        return left
+        mid = mid_prev.next
+        mid_prev.next = None
+        return mid
 
-    pivot = head
-    current = head.next
-    right_head = right_tail = None
-    left_head = left_tail = None
-    pivot.next = None
+    def merge_nodes(first: ListNode, second: ListNode):
 
-    while current:
-        if current.val <= pivot.val:
-            left_head = left_head if left_head else current
-            left_tail = append_node(left_tail, current)
-        else:
-            right_head = right_head if right_head else current
-            right_tail = append_node(right_tail, current)
+        dummy = ListNode(0)
+        current = dummy
 
-        current = current.next
-        if not current:
-            left_tail = append_node(left_tail, None)
-            right_tail = append_node(right_tail, None)
+        while first and second:
+            if first.val < second.val:
+                current.next = first
+                first = first.next
+            else:
+                current.next = second
+                second = second.next
+            current = current.next
 
-    return concat_sorted_list(sortList(left_head), concat_sorted_list(pivot, sortList(right_head)))
+        current.next = first if first else second
+
+        return dummy.next
+
+    right = sortList(mid_node())
+    left = sortList(head)
+    return merge_nodes(left, right)
 
 
 if __name__ == '__main__':
