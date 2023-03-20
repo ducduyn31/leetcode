@@ -2,32 +2,26 @@ from typing import List
 
 
 def floodFill(image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
-    visited = [[False for _ in range(len(image[0]))] for _ in range(len(image))]
-
-    def dfs(row: int, column: int, original: int):
-        if row < 0 or row >= len(image) or column < 0 or column >= len(image[0]):
+    def dfs(r: int, c: int, origin_color: int, new_color: int):
+        if image[r][c] != origin_color:
             return
+        image[r][c] = new_color
 
-        if visited[row][column]:
-            return
+        if r >= 1:
+            dfs(r - 1, c, origin_color, new_color)
+        if c >= 1:
+            dfs(r, c - 1, origin_color, new_color)
+        if r + 1 < len(image):
+            dfs(r + 1, c, origin_color, new_color)
+        if c + 1 < len(image[0]):
+            dfs(r, c + 1, origin_color, new_color)
 
-        if image[row][column] != original and image[row][column] != newColor:
-            return
-
-        new_original = image[row][column]
-        image[row][column] = newColor
-        visited[row][column] = True
-
-        dfs(row - 1, column, new_original)
-        dfs(row, column - 1, new_original)
-        dfs(row + 1, column, new_original)
-        dfs(row, column + 1, new_original)
-
-    dfs(sr, sc, image[sr][sc])
+    if image[sr][sc] != newColor:
+        dfs(sr, sc, origin_color=image[sr][sc], new_color=newColor)
 
     return image
 
 
 if __name__ == '__main__':
-    print(floodFill([[0, 1, 0], [0, 0, 1]], 1, 1, 1))
-    print(floodFill([[1, 1, 1], [1, 1, 0], [1, 0, 1]], 1, 1, 2))
+    assert floodFill([[0, 1, 0], [0, 0, 1]], 1, 1, 1) == [[1, 1, 0], [1, 1, 1]]
+    assert floodFill([[1, 1, 1], [1, 1, 0], [1, 0, 1]], 1, 1, 2) == [[2, 2, 2], [2, 2, 0], [2, 0, 1]]
