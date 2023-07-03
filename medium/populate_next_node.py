@@ -54,6 +54,7 @@ class Node:
 def connect(root: Node) -> Node:
     if not root:
         return root
+
     def bfs(root: Node):
         Q = [(root, 0)]
         last_node, last_level = None, -1
