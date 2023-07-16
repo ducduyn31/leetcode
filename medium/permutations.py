@@ -1,11 +1,25 @@
 import unittest
+from collections import deque
 from typing import List
 
 
 class Solution:
+
     def permute(self, nums: List[int]) -> List[List[int]]:
-        from itertools import permutations
-        return [list(p) for p in permutations(nums)]
+        result = []
+        self.permutation(deque(nums), [-1 for _ in nums], 0, result)
+        return result
+
+    def permutation(self, selection: deque, current_permutation: List[int], count: int, result: List[List[int]]):
+        if count == len(current_permutation):
+            result.append(current_permutation.copy())
+            return
+
+        for _ in range(len(current_permutation) - count):
+            num = selection.popleft()
+            current_permutation[count] = num
+            self.permutation(selection, current_permutation, count + 1, result)
+            selection.append(num)
 
 
 class SolutionTest(unittest.TestCase):
