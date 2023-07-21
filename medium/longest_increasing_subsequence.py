@@ -1,19 +1,22 @@
 import unittest
+from bisect import bisect_left
 from typing import List
 
 
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        lis_len = [1]
+        sorted_nums, lis = [], []
 
-        for i in range(1, len(nums)):
-            candidates = [lis_len[j] for j in range(i) if nums[j] < nums[i]]
-            if not candidates:
-                lis_len.append(1)
+        for i, v in enumerate(nums):
+            max_lis = bisect_left(sorted_nums, v)
+            if max_lis == len(sorted_nums):
+                sorted_nums.append(v)
+                lis.append([i])
             else:
-                lis_len.append(max(candidates) + 1)
+                sorted_nums[max_lis] = v
+                lis[max_lis].append(i)
 
-        return max(lis_len)
+        return len(lis)
 
 
 class SolutionTest(unittest.TestCase):
