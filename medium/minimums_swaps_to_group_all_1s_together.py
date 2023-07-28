@@ -1,4 +1,3 @@
-import heapq
 import unittest
 from collections import Counter
 from typing import List
