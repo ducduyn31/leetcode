@@ -1,26 +1,16 @@
+import bisect
 import unittest
 from typing import List
 
 
 class Solution:
     def minLengthAfterRemovals(self, nums: List[int]) -> int:
-        left, right = 0, len(nums) // 2
-
-        def can_remove_completely(k: int):
-            for i in range(k):
-                if nums[i] >= nums[-k + i]:
-                    return False
-            return True
-
-        while left < right:
-            mid = (left + right + 1) // 2
-
-            if can_remove_completely(mid):
-                left = mid
-            else:
-                right = mid - 1
-
-        return len(nums) - 2 * left
+        N = len(nums)
+        mid = N // 2
+        count = bisect.bisect_right(nums, nums[mid]) - bisect.bisect_left(nums, nums[mid])
+        if count > mid:
+            return 2 * count - N
+        return N % 2
 
 
 class SolutionTest(unittest.TestCase):
