@@ -1,51 +1,26 @@
 import unittest
-from collections import deque
 from typing import List
 
 
 class Solution:
     def minOperations(self, nums: List[int], target: int) -> int:
-        if sum(nums) < target:
+        total = sum(nums)
+        if total < target:
             return -1
 
-        n = max(max(nums).bit_length(), target.bit_length())
-        required_idx = deque()
-        state = [0] * n
-        t = target
-        for i in range(n - 1, -1, -1):
-            if 1 & t:
-                required_idx.append(i)
-            t >>= 1
-
-        last_num = 0
-        prev_state = 0
-        for i in nums:
-            state[-i.bit_length()] += 1
-            last_num = max(last_num, n - i.bit_length())
-
+        nums.sort()
         ans = 0
-        while required_idx:
-            lsb = required_idx[0]
-
-            if lsb <= last_num:
-                while lsb <= last_num:
-                    new_state = state[last_num] + prev_state
-                    if lsb == last_num and new_state > 0:
-                        required_idx.popleft()
-                        new_state -= 1
-                    prev_state, updated_state = divmod(new_state, 2)
-                    state[last_num] = updated_state
-                    last_num -= 1
-
+        while target > 0:
+            current = nums.pop()
+            if total - current >= target:
+                total -= current
+            elif current <= target:
+                total -= current
+                target -= current
             else:
-                while last_num >= 0 and lsb == required_idx[0]:
-                    if state[last_num] > 0:
-                        while required_idx and required_idx[0] > last_num:
-                            required_idx.popleft()
-                        ans += lsb - last_num
-                        state[last_num] -= 1
-                        break
-                    last_num -= 1
+                nums.append(current // 2)
+                nums.append(current // 2)
+                ans += 1
 
         return ans
 
