@@ -11,24 +11,23 @@ class Solution:
         n = len(routes)
         children = defaultdict(set)
 
-        source_nodes = [node_id for node_id in range(n) if source in routes[node_id]]
-        target_nodes = [node_id for node_id in range(n) if target in routes[node_id]]
-        visited = [False] * n
-        S = source_nodes[:]
+        for node_id in range(n):
+            for other_node_id in range(node_id + 1, n):
+                if routes[node_id].intersection(routes[other_node_id]):
+                    children[node_id].add(other_node_id)
+                    children[other_node_id].add(node_id)
 
-        while S:
-            current_node = S.pop()
-            visited[current_node] = True
+        source_nodes = set()
+        target_nodes = set()
 
-            for node_id in range(n):
-                if visited[node_id]:
-                    continue
-                if routes[current_node].intersection(routes[node_id]):
-                    children[current_node].add(node_id)
-                    children[node_id].add(current_node)
-                    S.append(node_id)
+        for node_id in range(n):
+            if source in routes[node_id]:
+                source_nodes.add(node_id)
+            if target in routes[node_id]:
+                target_nodes.add(node_id)
 
         visited = [False] * n
+
         Q = deque([(node_id, 1) for node_id in source_nodes])
         while Q:
             current_node, dist = Q.popleft()
