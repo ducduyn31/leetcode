@@ -7,13 +7,11 @@ class Solution:
     def predictTheWinner(self, nums: List[int]) -> bool:
         @cache
         def dp(turn, start, end):
-            alpha = turn % 2 * 2 - 1
             if start == end:
-                return -alpha * nums[end]
-            select = max if turn % 2 == 0 else min
-            return select(
-                dp(turn + 1, start, end - 1) - alpha * nums[end],
-                dp(turn + 1, start + 1, end) - alpha * nums[start],
+                return nums[end]
+            return max(
+                nums[end] - dp(turn + 1, start, end - 1),
+                nums[start] - dp(turn + 1, start + 1, end)
             )
 
         return dp(0, 0, len(nums) - 1) >= 0
