@@ -1,18 +1,36 @@
+import unittest
 from typing import List
 
 
-def moveZeroes(nums: List[int]) -> None:
-    for i in range(len(nums) - 1, 0, -1):
-        if nums[i] == 0:
-            nums.pop(i)
-            nums.append(0)
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        left, right = 0, 0
+        n = len(nums)
+
+        while right < n:
+            if nums[right] != 0:
+                nums[left] = nums[right]
+                left += 1
+
+            right += 1
+
+        while left < n:
+            nums[left] = 0
+            left += 1
 
 
-def assert_move(nums: List[int], result: List[int]):
-    moveZeroes(nums)
-    assert nums == result
+class SolutionTest(unittest.TestCase):
 
+    def setUp(self):
+        self.move_zeroes = Solution().moveZeroes
 
-if __name__ == '__main__':
-    assert_move([0, 1, 0, 3, 12], [1, 3, 12, 0, 0])
-    assert_move([0], [0])
+    def test_1(self):
+        nums = [ 0 , 1, 0, 3, 12]
+        #              1,  3, ^       ^
+        self.move_zeroes(nums)
+        self.assertEqual(nums, [1, 3, 12, 0, 0])
+
+    def test_2(self):
+        nums = [0]
+        self.move_zeroes(nums)
+        self.assertEqual(nums, [0])
